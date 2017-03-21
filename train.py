@@ -2,6 +2,12 @@ import csv
 import cv2
 import numpy as np
 
+def dopath(source_path):
+	filename = source_path.split('/')[-1]
+	current_path = 'data/IMG/' + filename
+	return current_path
+
+
 lines = []
 with open( 'data/driving_log.csv' ) as csvfile:
 	reader = csv.reader(csvfile)
@@ -11,9 +17,6 @@ with open( 'data/driving_log.csv' ) as csvfile:
 images = []
 measurements = []
 for line in lines:
-	source_path = line[0]
-	filename = source_path.split('/')[-1]
-	current_path = 'data/IMG/' + filename
 	
 	steering_center = float(line[3])
 
@@ -22,9 +25,9 @@ for line in lines:
 	steering_left = steering_center + correction
 	steering_right = steering_center - correction
 
-	image_center = cv2.imread( line[0] )
-	image_left = cv2.imread( line[1] )
-	image_right = cv2.imread( line[2] )
+	image_center = cv2.imread( dopath( line[0] ) )
+	image_left = cv2.imread( dopath( line[1] ) )
+	image_right = cv2.imread( dopath( line[2] ) ) 
 
 	images.extend( [image_center, image_left, image_right] )
 	measurements.extend( [steering_center, steering_left, steering_right] )
@@ -47,7 +50,8 @@ from keras.layers import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
 model = Sequential()
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
+model.add( Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)) )
+model.add( Lambda(lambda x: (x / 255.0) - 0.5) )
 model.add( Convolution2D(6, 5, 5, activation="relu") )
 model.add( MaxPooling2D() )
 model.add( Convolution2D(6, 5, 5, activation="relu") )
