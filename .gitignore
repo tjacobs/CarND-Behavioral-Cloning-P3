@@ -3,3 +3,6 @@ data/
 mac_sim.app/
 
 olddata/
+
+data*/
+*.zip
