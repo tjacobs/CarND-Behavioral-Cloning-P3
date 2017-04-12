@@ -7,7 +7,6 @@ from keras.layers import Lambda
 from keras.layers import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 
-
 # Remap path
 def dopath(source_path):
 	filename = source_path.split('/')[-1]
@@ -56,7 +55,6 @@ for line in lines:
 X_train = np.array( images )
 y_train = np.array( measurements )
 
-
 # Define model
 model = Sequential()
 
@@ -65,19 +63,30 @@ model.add( Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)) )
 
 # Normalize
 model.add( Lambda(lambda x: (x / 255.0) - 0.5) )
-model.add( Convolution2D(6, 5, 5, activation="relu") )
-model.add( MaxPooling2D() )
-model.add( Convolution2D(6, 5, 5, activation="relu") )
-model.add( MaxPooling2D() )
-model.add( Flatten( ) )
-model.add( Dense( 120 ) )
-model.add( Dropout( 0.2 ) )
-model.add( Dense( 84 ) )
-model.add( Dense( 1 ) )
 
+# Convolutions
+model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(1,1)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(1,1)))
+
+# Flatten
+model.add(Flatten())
+
+# Fully connected
+model.add(Dense(200, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(50, activation='relu'))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='tanh'))
+
+# Compile
 model.compile( loss='mse', optimizer='adam' )
-model.fit( X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
 
+# Train
+model.fit( X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=1)
+
+# Save
 model.save( 'model.h5' )
-
 
