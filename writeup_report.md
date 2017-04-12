@@ -13,18 +13,18 @@ The goals / steps of this project are the following:
 ---
 
 
-# Solution Development
---
-I started out using an adapted LeNet model, implemented in Keras. With enough training data, this worked well enough to get the car to the bridge, but it quickly drove off the road at around this point.
 
 ## Gathering training data
 
-I gathered training data by driving manually around the track twice, using the mouse, going at full speed, backwards around the track once. I also recorded several recovery from either side sequences, so the network knows.
+I gathered training data by driving manually around the track twice, using the mouse, going at full speed, backwards around the first (simple) track once. I also recorded several recovery from either side sequences, so the network knows how to recover from situations where it gets too close to the side of the road.
 
 ## Data augmentation
 I added in reading of the left offset image and the right offset image from the CSV file, pairing those with steering offset corrections of 0.2 for left and -0.2 for right, as you can see on line 32 of model.py.
 
-I then flip each of the three images (left, center, right) horizontally, pairing them with negated three steering angles.
+I then flip each of the three images (left, center, right) horizontally, pairing them with negated three steering angles. This helps it learn both left and right turns evenly.
+
+## The first model
+I started out using an adapted LeNet model, implemented in Keras. With enough training data, this worked well enough to get the car to the bridge, but it quickly drove off the road at around this point.
 
 ## The next model
 Then I then switched to a model which is based on the [Nvidia end-to-end self driving model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/). This worked much better.
@@ -43,5 +43,10 @@ At first I had the fully connected section start with a 1000 neuron fully connec
 
 ## Training
 
-At first I was training for five epochs, but I found the validation loss was not improving much after the first epoch, so I switched to just training one epoch.
+I split the data into a 20% validation set and 80% training set. At first I was training for five epochs, but I found the validation loss was not improving much after the first epoch, so I switched to just training one epoch. The model used an adam optimizer, so the learning rate didn't need to be tuned manually.
+
+
+## Results
+
+After training the model using the gathered driving data, I ran the model on the track and it drove fully around the track autonomously.
 

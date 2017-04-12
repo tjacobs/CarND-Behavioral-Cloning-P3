@@ -64,17 +64,17 @@ model.add( Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)) )
 # Normalize
 model.add( Lambda(lambda x: (x / 255.0) - 0.5) )
 
-# Convolutions
+# Five convolution layers
 model.add(Convolution2D(24, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(36, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(48, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsample=(1, 1)))
 model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsample=(1, 1)))
 
-# Flatten
+# One flatten layer
 model.add(Flatten())
 
-# Fully connected
+# Five fully connected layers
 model.add(Dense(200, activation='relu'))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(50, activation='relu'))
