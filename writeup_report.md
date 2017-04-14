@@ -40,6 +40,8 @@ The fully connected layers all use ReLU with the exception of the last, the outp
 
 At first I had the fully connected section start with a 1000 neuron fully connected layer, but this resulted in a 110mb saved weights trained model, which was excessive for github, so I reduced the fully connected first layer down to 200, and performance was not hindered.
 
+I experimented with adding a dropout layer after the second fully connected layer, with dropout rate 0.5. This improves the driving performance by reducing overfitting and letting the model generalise better. Driving the car around the track backwards and flipping the images also helps to reduce overfitting to the exact track layout.
+
 ## Training
 
 I split the data into a 20% validation set and 80% training set. At first I was training for five epochs, but I found the validation loss was not improving much after the first epoch, so I switched to just training one epoch. The model used an adam optimizer, so the learning rate didn't need to be tuned manually.
@@ -49,3 +51,12 @@ I split the data into a 20% validation set and 80% training set. At first I was 
 
 After training the model using the gathered driving data, I ran the model on the track and it drove fully around the track autonomously.
 
+The car has a little trouble in certain areas, such as just before the bridge:
+
+![Trouble1](video/2017_04_14_06_35_54_170.jpg)
+
+And just after the bridge:
+
+![Trouble2](video/2017_04_14_06_36_29_024.jpg)
+
+Both times veering to the left.

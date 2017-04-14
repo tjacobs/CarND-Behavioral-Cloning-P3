@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
-from keras.layers import Lambda
+from keras.layers import Lambda, Dropout
 from keras.layers import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 
@@ -74,9 +74,10 @@ model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsam
 # One flatten layer
 model.add(Flatten())
 
-# Five fully connected layers
+# Five fully connected layers, one dropout
 model.add(Dense(200, activation='relu'))
 model.add(Dense(100, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1, activation='tanh'))
