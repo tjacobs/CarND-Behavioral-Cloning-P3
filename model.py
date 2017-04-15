@@ -75,9 +75,8 @@ model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsam
 model.add(Flatten())
 
 # Five fully connected layers, one dropout
-model.add(Dense(200, activation='relu'))
+model.add(Dense(400, activation='relu'))
 model.add(Dense(100, activation='relu'))
-model.add(Dropout(0.5))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1, activation='tanh'))
