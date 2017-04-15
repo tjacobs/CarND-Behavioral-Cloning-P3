@@ -64,6 +64,8 @@ Both times veering to the left.
 
 I collected some more data around those areas, driving straight in the middle of the road past those areas, and retrained.
 
+I changed the model to have 400 neurons in its first fully connected layer, up from 200. 
+
 The results were better. Now the car stayed close to the center of the road in these areas.
 
 ![Good1](2017_04_15_06_38_32_863.jpg)
@@ -72,3 +74,4 @@ And the bridge entry.
 
 ![Good2](2017_04_15_06_38_41_531.jpg)
 
+The car is now going around the track for a lap and taking the bridge easily.
