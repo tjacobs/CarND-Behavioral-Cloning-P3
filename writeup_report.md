@@ -40,7 +40,10 @@ The fully connected layers all use ReLU with the exception of the last, the outp
 
 At first I had the fully connected section start with a 1000 neuron fully connected layer, but this resulted in a 110mb saved weights trained model, which was excessive for github, so I reduced the fully connected first layer down to 200, and performance was not hindered.
 
-I experimented with adding a dropout layer after the second fully connected layer, with dropout rate 0.5. This improves the driving performance by reducing overfitting and letting the model generalise better. Driving the car around the track backwards and flipping the images also helps to reduce overfitting to the exact track layout.
+## Reducing overfitting
+I experimented with adding a dropout layer after the first fully connected layer, with dropout rate 0.5, as well with one after the second fully connected layer. This actually decreased the driving performance, having the car run off the road in both cases. So I removed the dropout layers.
+
+Driving the car around the track backwards and flipping the images seems enough to reduce overfitting to the exact track layout.
 
 ## Training
 
@@ -49,14 +52,23 @@ I split the data into a 20% validation set and 80% training set. At first I was 
 
 ## Results
 
-After training the model using the gathered driving data, I ran the model on the track and it drove fully around the track autonomously.
+After training the model using the gathered driving data, I ran the model on the track and it drove fully around the track autonomously. But it wasn't the smoothest ride, where the car has a little trouble in certain areas, such as just before the bridge:
 
-The car has a little trouble in certain areas, such as just before the bridge:
-
-![Trouble1](video/2017_04_14_06_35_54_170.jpg)
+![Trouble1](2017_04_14_06_35_54_170.jpg)
 
 And just after the bridge:
 
-![Trouble2](video/2017_04_14_06_36_29_024.jpg)
+![Trouble2](2017_04_14_06_36_29_024.jpg)
 
 Both times veering to the left.
+
+I collected some more data around those areas, driving straight in the middle of the road past those areas, and retrained.
+
+The results were better. Now the car stayed close to the center of the road in these areas.
+
+![Good1](2017_04_15_06_38_32_863.jpg)
+
+And the bridge entry.
+
+![Good2](2017_04_15_06_38_41_531.jpg)
+
